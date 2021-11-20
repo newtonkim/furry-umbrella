@@ -16,7 +16,21 @@ class HomeController extends Controller
             return view('admin.home');
 
         } else {
-            return view('dashboard');
+
+            return view('user.home');
+        }
+
+    }
+
+    public function index()
+    {
+        if (Auth::id()) {
+
+            return redirect('/redirect');
+
+        } else {
+
+            return view('user.home');
         }
 
     }
