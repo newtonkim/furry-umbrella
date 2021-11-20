@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +18,9 @@ class HomeController extends Controller
 
         } else {
 
-            return view('user.home');
+            $data = Product::orderBy('created_at', 'desc')->paginate(3);
+
+            return view('user.home', compact('data'));
         }
 
     }
@@ -30,7 +33,9 @@ class HomeController extends Controller
 
         } else {
 
-            return view('user.home');
+            $data = Product::latest()->first()->paginate(3);
+
+            return view('user.home', compact('data'));
         }
 
     }
