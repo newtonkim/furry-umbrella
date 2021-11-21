@@ -33,10 +33,28 @@ class HomeController extends Controller
 
         } else {
 
-            $data = Product::latest()->first()->paginate(3);
+            $data = Product::orderby('created_at', 'desc')->paginate(3);
 
             return view('user.home', compact('data'));
         }
+
+    }
+
+    public function search(Request $request)
+
+    {
+        $search = $request->search;
+        // condition for the search to return all item if search button is clicked with no data
+        if ($search == '') {
+
+            $data = Product::orderby('created_at', 'desc')->paginate(3);
+
+            return view('user.home', compact('data'));
+        }
+
+        $data = Product::where('title', 'Like', '%'.$search. '%')->get();
+
+        return view('user.home', compact('data'));
 
     }
 }

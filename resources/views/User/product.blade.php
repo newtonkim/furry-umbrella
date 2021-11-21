@@ -5,6 +5,14 @@
                 <div class="section-heading">
                     <h2>Latest Products</h2>
                     <a href="products.html">view all products <i class="fa fa-angle-right"></i></a>
+
+                    <form action="{{ url('search') }}" method="GET" class="form-inline"
+                        style="float: right; padding: 10px;">
+                        @csrf
+                        <input class="form-control" type="search" name="search" placeholder="search">
+
+                        <input type="submit" class="btn btn-success" value="Search">
+                    </form>
                 </div>
             </div>
 
@@ -20,6 +28,8 @@
                             <h6>Ugx{{ number_format($product->price) }}</h6>
                             <p>{{ $product->description }}</p>
 
+                            <a class="btn btn-primary" href="#">Add Cart</a>
+
                             <ul class="stars">
                                 <li><i class="fa fa-star"></i></li>
                                 <li><i class="fa fa-star"></i></li>
@@ -33,9 +43,14 @@
                 </div>
             @endforeach
 
-            <div class="d-flex justify-content-center">
-                {!! $data->links() !!}
-            </div>
+            <!--Cater for error if search is clicked and its empty-->
+            @if (method_exists($data, 'links'))
+
+                <div class="d-flex justify-content-center">
+
+                    {!! $data->links() !!}
+                </div>
+            @endif
         </div>
     </div>
 </div>

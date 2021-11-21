@@ -53,14 +53,14 @@
                                         <td class=" font-weight-normal text-monospace" style="color: white;">
                                             {{ number_format($product->price) }}</td>
                                         <td>
-                                            <a href="#">
+                                            <a href="{{ url('updateproduct', $product->id) }}">
                                                 <div
                                                     class="font-weight-bolder text-monospace badge badge-outline-success">
                                                     Update</div>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{url('/deleteproduct', $product->id)}}">
+                                            <a href="{{ url('/deleteproduct', $product->id) }}">
                                                 <div
                                                     class=" font-weight-bolder text-monospace badge badge-outline-danger">
                                                     Delete</div>
@@ -72,7 +72,9 @@
                                 </tbody>
                             @endforeach
                         </table>
-
+                        <div class="d-flex justify-content-center mb-5">
+                            {!! $data->links() !!}
+                        </div>
                     </div>
                 </div>
             </div>
