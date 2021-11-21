@@ -17,7 +17,7 @@
                             <a href="#">
                                 <h4>{{ $product->title }}</h4>
                             </a>
-                            <h6>Ugx{{ $product->price }}</h6>
+                            <h6>Ugx{{ number_format($product->price) }}</h6>
                             <p>{{ $product->description }}</p>
 
                             <ul class="stars">
@@ -34,7 +34,7 @@
             @endforeach
 
             <div class="d-flex justify-content-center">
-                {!!$data->links()!!}
+                {!! $data->links() !!}
             </div>
         </div>
     </div>

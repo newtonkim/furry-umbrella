@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    @notifyCss
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
@@ -21,7 +21,13 @@
 </head>
 
 <body class="font-sans antialiased">
+    <x:notify-messages />
+
     <x-jet-banner />
+
+    {{-- @include('notify::messages') --}}
+
+    @notifyJs
 
     {{-- <div class="min-h-screen bg-gray-100"> --}}
     <div>

@@ -32,7 +32,26 @@ class AdminController extends Controller
 
          $data->save();
 
-         return redirect()->back()->with('success','Product Added Successfully! ⚡️');
+         notify()->success('Product Added Successfully ⚡️');
 
+         return redirect()->back();
+
+     }
+
+     public function showproduct()
+     {
+         $data = Product::all();
+
+         return view('admin.showproduct', compact('data'));
+     }
+
+     public function deleteproduct($id)
+     {
+        $data = Product::find($id);
+
+        $data->delete();
+        notify()->success('Product Deleted Successfully ⚡️');
+        // emotify('success', 'Product Deleted Successfully');
+        return redirect()->back();
      }
 }
