@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +56,40 @@ class HomeController extends Controller
         $data = Product::where('title', 'Like', '%'.$search. '%')->get();
 
         return view('user.home', compact('data'));
+
+    }
+
+    public function addcart(Request $request, $id)
+    {
+        // check if the user is logged in or not
+        if (Auth::id()) {
+
+            //get authenticated user
+            $user = auth()->user();
+
+            $product = Product::find($id);
+
+            // create a new cart with details from user and product tables
+            $cart = new Cart;
+
+            // get authenticated user name
+            $cart->name = $user->name;
+            $cart->phone = $user->phone;
+            $cart->address = $user->address;
+            $cart->product_title = $product->title;
+            $cart->price = $product->price;
+            $cart->quantity = $request->quantity;
+            $cart->save();
+            notify()->success('Product Added Successfully to the Cart ⚡️');
+            return redirect()->back();
+
+        } else {
+
+            return redirect('login');
+        }
+
+
+
 
     }
 }
