@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -20,8 +22,10 @@ class HomeController extends Controller
         } else {
 
             $data = Product::orderBy('created_at', 'desc')->paginate(3);
+            $user = auth()->user();
+            $count = Cart::where('phone', $user->phone)->count();
 
-            return view('user.home', compact('data'));
+            return view('user.home', compact('data', 'count'));
         }
 
     }
@@ -88,8 +92,56 @@ class HomeController extends Controller
             return redirect('login');
         }
 
+    }
 
+    public function showcart()
+    {
+        $user = auth()->user();
+        $carts = Cart::where('phone', $user->phone)->get();
+        $count = Cart::where('phone', $user->phone)->count();
 
+        return view('user.showcart', compact('count', 'carts'));
+    }
 
+    public function deletecart($id)
+    {
+
+        $cart_item = Cart::findOrFail($id);
+
+        $cart_item->delete();
+        notify()->success('Product Removed from Cart Successfully ⚡️');
+
+        return redirect()->back();
+    }
+
+    public function confirmorder(Request $request)
+    {
+        $user = auth()->user();
+
+        $name = $user->name;
+
+        $phone = $user->phone;
+
+        $address = $user->address;
+
+        foreach($request->productname as $key=>$productname)
+        {
+            $order = new Order;
+
+            $order->product_name = $request->productname[$key];
+            $order->quantity = $request->quantity[$key];
+            $order->price = $request->price[$key];
+            $order->name = $name;
+            $order->phone = $phone;
+            $order->address = $address;
+            $order->status = 'Pending Delivery';
+
+            notify()->success('Products Ordered Successfully⚡️');
+            $order->save();
+        }
+        // Clear carts table  and store the data to order table after order has been confirmed
+        DB::table('carts')->where('phone', $phone)->delete();
+
+        return redirect()->back();
     }
 }

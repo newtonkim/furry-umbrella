@@ -2,15 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
      public function product()
      {
-        return view('admin.product');
-     }
+         if (Auth::id())
+         {
+             return view('admin.product');
+         }
+         else
+         {
+            return redirect('/login');
+         }
+
+        }
 
      public function uploadproduct(Request $request)
      {
@@ -87,6 +97,23 @@ class AdminController extends Controller
          notify()->success('Product Updated Successfully ⚡️');
 
          return redirect('/showproduct');
+     }
+
+     public function showorder()
+     {
+         $orders = Order::all();
+
+         return view('admin.showorder', compact('orders'));
+     }
+
+     public function updatestatus($id)
+     {
+         $order = Order::findOrFail($id);
+
+         $order->status = 'Delivered';
+         $order->save();
+
+         return redirect()->back();
      }
 
 }

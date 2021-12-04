@@ -60,7 +60,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ url('/deleteproduct', $product->id) }}">
+                                            <a onclick="return confirm('Are you Sure')" href="{{ url('/deleteproduct', $product->id) }}">
                                                 <div
                                                     class=" font-weight-bolder text-monospace badge badge-outline-danger">
                                                     Delete</div>
