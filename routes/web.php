@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +42,5 @@ Route::get('/showcart',[HomeController::class, 'showcart']);
 Route::get('/deletecart/{id}',[HomeController::class, 'deletecart']);
 Route::post('/order',[HomeController::class, 'confirmorder']);
 Route::get('/updatestatus/{id}',[AdminController::class, 'updatestatus']);
+Route::any('payment', [PaymentController::class, 'index']);
+Route::any('verifypayment', [PaymentController::class, 'verify']);
